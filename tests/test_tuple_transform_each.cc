@@ -44,7 +44,7 @@ TEST(TestTupleTransformEach, TypeSameTypes) {
 TEST(TestTupleTransformEach, SameTypes) {
   {
     auto t_original = std::make_tuple(1, 2, 3);
-    auto t_transformed =
+	std::tuple<std::string, std::string, std::string> t_transformed =
       tupleutils::tuple_transform_each<transform_to_string>(t_original);
     auto t_expected =
       std::make_tuple(std::string("1"), std::string("2"), std::string("3"));
@@ -62,8 +62,8 @@ TEST(TestTupleTransformEach, SameTypes) {
   }
 
   {
-    auto t_original = std::make_tuple(1, (double)2.1f, 3);
-    auto t_transformed =
+	auto t_original = std::make_tuple(1, static_cast<double>(2.1f), 3);
+	std::tuple<std::string, std::string, std::string> t_transformed =
       tupleutils::tuple_transform_each<transform_to_string>(t_original);
     auto t_expected =
       std::make_tuple(std::string("1"), std::string("2"), std::string("3"));
@@ -130,8 +130,8 @@ TEST(TestTupleTransformEach, TypeMultipeTypes) {
 }
 
 TEST(TestTupleTransformEach, MultipleTypes) {
-  auto t_original = std::make_tuple(1, (double)2.1f, std::string("3"));
-  auto t_transformed =
+  auto t_original = std::make_tuple(1, static_cast<double>(2.1f), std::string("3"));
+  std::tuple<std::string, char, int> t_transformed =
     tupleutils::tuple_transform_each<transform_to_something>(t_original);
   auto t_expected = std::make_tuple(std::string("1"), '2', 3);
 
@@ -180,7 +180,7 @@ TEST(TestTupleTransformEach, StdRef) {
   int b = 2;
   int c = 3;
   auto t_original = std::make_tuple(std::ref(a), std::ref(b), std::ref(c));
-  auto t_transformed =
+  std::tuple<std::string, std::string, std::string> t_transformed =
     tupleutils::tuple_transform_each<transform_to_string>(t_original);
   auto t_expected =
     std::make_tuple(std::string("1"), std::string("2"), std::string("3"));
@@ -235,7 +235,7 @@ TEST(TestTupleTransformEach, StdRefNonCopyable) {
   NonCopyable b(2);
   NonCopyable c(3);
   auto t_original = std::make_tuple(std::ref(a), std::ref(b), std::ref(c));
-  auto t_transformed =
+  std::tuple<std::string, std::string, std::string> t_transformed =
     tupleutils::tuple_transform_each<transform_noncopyable_to_string>(t_original);
   auto t_expected =
     std::make_tuple(std::string("1"), std::string("2"), std::string("3"));
@@ -291,7 +291,7 @@ public:
   static
   char
   transform(int from) {
-    return 'a' + from;
+	return 'a' + static_cast<char>(from);
   }
 };
 
@@ -303,7 +303,7 @@ public:
   static
   int
   transform(double from) {
-    return (int)from;
+	return static_cast<int>(from);
   }
 };
 
